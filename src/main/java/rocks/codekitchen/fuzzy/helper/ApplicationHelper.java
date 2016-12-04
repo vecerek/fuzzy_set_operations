@@ -1,6 +1,7 @@
 package rocks.codekitchen.fuzzy.helper;
 
 import parsii.tokenizer.ParseException;
+import rocks.codekitchen.fuzzy.exception.MembershipFunctionEvaluationException;
 import rocks.codekitchen.fuzzy.model.FuzzyMember;
 import rocks.codekitchen.fuzzy.model.MembershipFunction;
 import rocks.codekitchen.fuzzy.model.math.Range;
@@ -49,6 +50,15 @@ public class ApplicationHelper {
             new MembershipFunction(function);
             return true;
         } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    public static boolean isMembershipFunctionEvaluable(String function) {
+        try {
+            new MembershipFunction(function).eval(0);
+            return true;
+        } catch (ParseException | MembershipFunctionEvaluationException e) {
             return false;
         }
     }

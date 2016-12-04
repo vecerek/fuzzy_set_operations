@@ -57,6 +57,9 @@ public class MainController {
     private static final String UNION_BUTTON = "Union";
     private static final String INTERSECT_BUTTON = "Intersection";
 
+    private static final String membershipParseErrorText = "Invalid function";
+    private static final String membershipEvalErrorText = "Use only 1 variable";
+
     @FXML public void initialize() {
         initializeBindings();
         addListeners();
@@ -178,7 +181,17 @@ public class MainController {
 
     private void checkMembershipFunction(String function, TextField membershipTextField) {
         Label errorLabel = membershipTextField == membershipATextField ? membershipAErrorLabel : membershipBErrorLabel;
-        errorLabel.setVisible(!isMembershipFunctionParsable(function));
+        boolean parsable = isMembershipFunctionParsable(function);
+        boolean evaluable = true;
+        if (parsable) {
+            evaluable = isMembershipFunctionEvaluable(function);
+        } else {
+            errorLabel.setText(membershipParseErrorText);
+        }
+        if (parsable && !evaluable)
+            errorLabel.setText(membershipEvalErrorText);
+
+        errorLabel.setVisible(!parsable || !evaluable);
         modified = true;
     }
 
@@ -193,6 +206,10 @@ public class MainController {
 
     private boolean isMembershipFunctionParsable(TextField membershipTextField) {
         return isMembershipFunctionParsable(membershipTextField.getText());
+    }
+
+    private boolean isMembershipFunctionEvaluable(String function) {
+        return !function.isEmpty() && ApplicationHelper.isMembershipFunctionEvaluable(function);
     }
 
     private BooleanBinding shouldUnaryOperationBeDisabled() {

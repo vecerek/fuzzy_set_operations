@@ -22,7 +22,7 @@ public class Range {
 
     public double start;
     public double end;
-    private static boolean closed;
+    private boolean closed;
     private static final Pattern numberPattern = Pattern.compile("(" + NUMBER + ")");
 
     public Range(double a, double b) {
