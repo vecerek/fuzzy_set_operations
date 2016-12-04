@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import parsii.tokenizer.ParseException;
 import rocks.codekitchen.fuzzy.exception.MembershipFunctionEvaluationException;
 import rocks.codekitchen.fuzzy.gui.FuzzyLineChart;
@@ -14,6 +17,10 @@ import rocks.codekitchen.fuzzy.helper.ApplicationHelper;
 import rocks.codekitchen.fuzzy.model.FuzzyMember;
 import rocks.codekitchen.fuzzy.model.FuzzySet;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Set;
 
 /**
@@ -64,6 +71,19 @@ public class MainController {
         initializeBindings();
         addListeners();
         initializeChart();
+
+        universeDefinitionErrorHyperlink.setOnAction(e -> {
+            if(Desktop.isDesktopSupported())
+            {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://github.com/vecerek/fuzzy_set_operations/blob/master/README.md#universe-definition"));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     @FXML private void handleNotButtonAction() throws ParseException, MembershipFunctionEvaluationException {
